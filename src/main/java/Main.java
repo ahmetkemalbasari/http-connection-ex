@@ -3,6 +3,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
 
@@ -16,7 +17,7 @@ public class Main {
             System.out.println("Connection successfully established.");
 
         BufferedReader logReader = new BufferedReader(new InputStreamReader(myConnection.getInputStream()));
-
+        Scanner myScanner = new Scanner(System.in);
 
         while(logReader.readLine() != null && logReader.readLine() != null){
             try {
@@ -29,11 +30,14 @@ public class Main {
                 break;
             }
 
-
         }
+        logReader.close();
+
         System.out.println("Total post count: " + posts.size());
         for(Post a : posts){
             System.out.println("used id: " + a.userId + "   post id: " + a.id);
         }
+        System.out.println("Press enter to exit");
+        myScanner.nextLine();
     }
 }
