@@ -15,6 +15,11 @@ public class Main {
         myConnection.setRequestMethod("GET");
         if(myConnection.getResponseCode() == 200)
             System.out.println("Connection successfully established.");
+        else{
+            System.out.println("Connection failed");
+            throw new Exception();
+        }
+
 
         BufferedReader logReader = new BufferedReader(new InputStreamReader(myConnection.getInputStream()));
         Scanner myScanner = new Scanner(System.in);
