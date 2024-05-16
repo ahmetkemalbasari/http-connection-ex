@@ -1,9 +1,12 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.io.InputStream;
 
 public class Main {
 
@@ -20,29 +23,21 @@ public class Main {
             throw new Exception();
         }
 
+        InputStream inStream = myConnection.getInputStream();
+        Scanner scanner = new Scanner(inStream).useDelimiter("\\A");
+        String jsonResponse = scanner.hasNext() ? scanner.next() : "";
 
-        BufferedReader logReader = new BufferedReader(new InputStreamReader(myConnection.getInputStream()));
-        Scanner myScanner = new Scanner(System.in);
 
-        while(logReader.readLine() != null && logReader.readLine() != null){
-            try {
-                int userId = Integer.parseInt(logReader.readLine().substring(14).replace(",",""));
-                int messageId = Integer.parseInt(logReader.readLine().substring(10).replace(",", ""));
-                String title = logReader.readLine().substring(13);
-                String body = logReader.readLine().substring(12);
-                posts.add(new Post(userId, messageId, title, body));
-            }catch (Exception e){
-                break;
-            }
-
-        }
-        logReader.close();
+        Gson gson = new Gson();
+        Type postListType = new TypeToken<List<Post>>(){}.getType();
+        posts = gson.fromJson(jsonResponse, postListType);
 
         System.out.println("Total post count: " + posts.size());
         for(Post a : posts){
             System.out.println("used id: " + a.userId + "   post id: " + a.id);
         }
         System.out.println("Press enter to exit");
+        Scanner myScanner = new Scanner(System.in);
         myScanner.nextLine();
     }
 }
