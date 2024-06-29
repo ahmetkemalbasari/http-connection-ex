@@ -46,7 +46,9 @@ public class Main {
         int commentCount = postCount("https://jsonplaceholder.typicode.com/comments");
 
         //POST
-        String testJSON = "{\"postId\": 1, \"id\": " + ++commentCount + ", \"name\": \"randomName\", \"email\": \"random@gmail.com\", \"body\": \"random texts\"}";
+        Comment newComment = new Comment(1, ++commentCount, "randomName", "random@gmail.com", "asdasdas");
+        //String testJSON = "{\"postId\": 1, \"id\": " + ++commentCount + ", \"name\": \"randomName\", \"email\": \"random@gmail.com\", \"body\": \"random texts\"}";
+        String testJSON = gson.toJson(newComment);
         URL commentURL = new URL("https://jsonplaceholder.typicode.com/posts/1/comments");
         HttpURLConnection commentConnection = (HttpURLConnection) commentURL.openConnection();
 
@@ -70,8 +72,8 @@ public class Main {
         commentConnection2.setRequestProperty("Content-Type", "application/json; utf-8");
         commentConnection2.setRequestProperty("Accept", "application/json");
         commentConnection2.setDoOutput(true);
-
-        testJSON = "{\"postId\": 1, \"name\": \"randomName\", \"email\": \"random@gmail.com\", \"body\": \"new random texts\"}";
+        newComment.body = "new random texts";
+        testJSON = gson.toJson(newComment);
 
         bytes = testJSON.getBytes("utf-8");
 
